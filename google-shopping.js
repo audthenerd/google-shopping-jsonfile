@@ -2,33 +2,37 @@
 
 var count = 0;
 
+
 var jsonfile = require('jsonfile');
 
-var file = 'products.json'
+var file = 'products.json';
+
 
 jsonfile.readFile(file, function(err, obj) {
 
 //Go through the items and find all results that have kind of shopping#product. Print the count of these results.
 
-  var shoppingProducts = [];
+var shoppingProducts = [];
 
-  for (var i = 0; i < obj.items.length; i++) {
-    if (obj.items[i].kind === "shopping#product") {
-      shoppingProducts.push(obj.items[i].kind);
-      count++;
+for (var i = 0; i < obj.items.length; i++) {
+  if (obj.items[i].kind === "shopping#product") {
+    shoppingProducts.push(obj.items[i].kind);
+    count++;
+  }
+};
 
-    }
-  };
+
 
 //Save the title of all items with a backorder availability in inventories.
 
   var availBackOrder = [];
 
-  for (var i=0;i<obj.items.length;i++) {
-    if (obj.items[i].product.inventories[0].availability === "backorder") {
-      availBackOrder.push(obj.items[i].product.title);
-    }
+for (var i=0;i<obj.items.length;i++) {
+  if (obj.items[i].product.inventories[0].availability === "backorder") {
+    availBackOrder.push(obj.items[i].product.title);
   }
+};
+
 
 //Save the title of all items with more than one image link.
 
@@ -78,9 +82,10 @@ jsonfile.readFile(file, function(err, obj) {
       })
   };
 
-    var resultFile = 'result.json'
 
-    var result = {
+       var resultFile = 'result.json'
+
+        var result = {
                   "count": count,
                   "availableBackorders": availBackOrder,
                   "moreThanOneImage": imagesMoreThanOne,
@@ -93,15 +98,30 @@ jsonfile.readFile(file, function(err, obj) {
     // result["Available Backorders"] = availBackOrder;
     // result["More than one image"] = imagesMoreThanOne;
 
-
-
     jsonfile.writeFile(resultFile, result, function (err) {
 
       // console.error(err);
-      console.log(result);
 
-    });
+
+// Extra 1: Modify your program so that it will take 2 arguments on the command line, and output associated value from the saved results.json.
+
+// For example, for deliverable #2 above -- "Save the title of all items with a backorder availability in inventories." -- you might have stored that result under a key called: titleBackorderInventories.
+
+// So now, if you ran node google-shopping.js getkey titleBackorderInventories, you should see the result being output to Terminal.
+
+
+    var output;
+
+    for (var i=3; i<process.argv.length;i++){
+
+      process.argv.forEach(key => {
+        output = result[key];
+    })
+    };
+    console.log(output);
+
 });
 
+});
 
 
