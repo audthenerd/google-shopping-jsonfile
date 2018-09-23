@@ -5,10 +5,17 @@ var count = 0;
 
 var jsonfile = require('jsonfile');
 
-var file = 'products.json';
+//Refactor your program so that you can use a second (or any) set of json data.
+//Write your program so that the arugment can take in enough data to create a new item in the array (for either set of data).
 
+var file = process.argv.splice(2);
+
+file.forEach( file => {
 
 jsonfile.readFile(file, function(err, obj) {
+
+  console.log(file, obj);
+
 
 //Go through the items and find all results that have kind of shopping#product. Print the count of these results.
 
@@ -122,6 +129,7 @@ for (var i=0;i<obj.items.length;i++) {
 
 });
 
+});
 });
 
 
